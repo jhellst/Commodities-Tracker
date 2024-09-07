@@ -26,3 +26,7 @@ from flask_bcrypt import Bcrypt
 #   - Every day, update the database to include the most recent day of trading for each commodity we are tracking.
 
 
+
+
+# Frontend Steps:
+#   - Create React frontend with routing and tokens properly shared across frontend/backend.
