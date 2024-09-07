@@ -1,14 +1,11 @@
 import os
-from flask import Flask, render_template
-# from flask import Flask, jsonify, request, flash, redirect, session, render_template, url_for, g
+from flask import Flask, render_template, request, redirect, session, render_template, url_for, g, flash
 import requests
 from dotenv import load_dotenv
-
 from flask_cors import CORS, cross_origin
 import json
-# from models import db, connect_db, User, Team, League, StatisticsForLeague, TeamsFollowedByUser, LeaguesFollowedByUser
-# from dataClasses import LeagueInfo, TeamInfoForLeague
-# from soccerScraper import retrieveLeagueInfo, TeamInfo
+from models import db, User, Commodity, CommodityHistoricalData, CommoditiesFollowedByUser
+# from dataClasses import
 from datetime import datetime, timedelta, timezone
 
 
