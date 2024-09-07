@@ -1,9 +1,20 @@
 import os
 from flask import Flask, render_template
+# from flask import Flask, jsonify, request, flash, redirect, session, render_template, url_for, g
 import requests
 from dotenv import load_dotenv
 
+from flask_cors import CORS, cross_origin
+import json
+# from models import db, connect_db, User, Team, League, StatisticsForLeague, TeamsFollowedByUser, LeaguesFollowedByUser
+# from dataClasses import LeagueInfo, TeamInfoForLeague
+# from soccerScraper import retrieveLeagueInfo, TeamInfo
+from datetime import datetime, timedelta, timezone
+
+
+
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 load_dotenv()
 
 # Replace with your actual API key and endpoint
@@ -16,20 +27,12 @@ COMMODITIES_URL = f"https://financialmodelingprep.com/api/v3/symbol/available-co
 
 @app.route('/')
 def index():
-    # Fetch commodities data
-    FULL_URL = BASE_URL + "symbol/available-commodities?apikey=" + FMP_API_KEY
-
-
-    response = requests.get(FULL_URL)
-    # response = requests.get(COMMODITIES_URL)
-
+    # Fetch commodities data (list of all commodities being tracked in the database)
+    url = BASE_URL + "symbol/available-commodities?apikey=" + FMP_API_KEY
+    response = requests.get(url)
 
     commodities = response.json()  # Assuming it returns a JSON list of commodities
     print("commodities: ", commodities)
-
-    # specific_commodity_symbol = "GCUSD"  # Symbol for Gold Futures
-    # specific_commodity = next((item for item in commodities if item["symbol"] == specific_commodity_symbol), None)
-    # print("specific_commodity: ", specific_commodity)
 
     # Pass the commodities data to the frontend
     return render_template('index.html', commodities=commodities)
@@ -38,19 +41,11 @@ def index():
 
 @app.route('/commodities/historical/<string:symbol>')
 def get_historical_prices(symbol):
+    """Fetch historical data for the provided ticker symbol."""
 
-    # Fetch commodities data
-
-    FULL_URL = BASE_URL + "historical-price-full/" + symbol + "?apikey=" + FMP_API_KEY
-
-    URL = "https://financialmodelingprep.com/api/v3/historical-price-full/ZOUSX?apikey=rvd4e9wGk2OIWqd3iQof3hRyiWy2j5bY"
-    # response = requests.get(FULL_URL)
-    response = requests.get(URL)
-
-
-
-    historical_data = response.json()  # Assuming it returns a JSON list of commodities
-    print("Historical Data: ", historical_data)
+    url = BASE_URL + "historical-price-full/" + symbol + "?apikey=" + FMP_API_KEY
+    response = requests.get(url)
+    historical_data = response.json()
 
     return render_template('historical.html', data=historical_data)
 
