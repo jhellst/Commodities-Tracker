@@ -3,35 +3,64 @@ from flask import Flask, render_template, request, redirect, session, render_tem
 import requests
 from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
+# from flask_cors import CORS
+
+
 import json
-from models import db, User, Commodity, CommodityHistoricalData, CommoditiesFollowedByUser
+from models import db, connect_db, User, Commodity, CommodityHistoricalData, CommoditiesFollowedByUser
 # from dataClasses import
 from datetime import datetime, timedelta, timezone
+from helpers import get_commodities_list, update_historical_prices
+
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
+# from flask_jwt_extended import create_access_token
+# from flask_jwt_extended import create_refresh_token
+# from flask_jwt_extended import get_jwt_identity
+# from flask_jwt_extended import jwt_required
 
 
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-load_dotenv()
 
-# Replace with your actual API key and endpoint
-FMP_API_KEY = os.getenv('FMP_API_KEY')
 
-# TODO: Adjust this to allow for more flexible API calls.
-BASE_URL = f"https://financialmodelingprep.com/api/v3/" # TODO: Adjust and use later for other routes.
-COMMODITIES_URL = f"https://financialmodelingprep.com/api/v3/symbol/available-commodities?apikey={FMP_API_KEY}"
 
+bcrypt = Bcrypt(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
+app.config['SQLALCHEMY_ECHO'] = True
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config["JWT_SECRET_KEY"] = os.environ['SECRET_KEY']
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+jwt = JWTManager(app)
+
+# FMP_API_KEY = os.getenv('FMP_API_KEY')
+# BASE_URL = os.getenv('FMP_BASE_URL')
+
+
+@jwt.expired_token_loader
+def my_expired_token_callback(expired_token, date):
+    # print("Hello from jwt_expired_decorator")
+    return redirect(url_for('logout_user'))
+
+
+connect_db(app)
+
+
+
+
+# Routes below -> just to see content of backend API calls pre-db update.
 
 @app.route('/')
 def index():
     # Fetch commodities data (list of all commodities being tracked in the database)
-    url = BASE_URL + "symbol/available-commodities?apikey=" + FMP_API_KEY
-    response = requests.get(url)
+    """Fetch a list of all tracked commodities via the FMP API."""
 
-    commodities = response.json()  # Assuming it returns a JSON list of commodities
-    print("commodities: ", commodities)
-
-    # Pass the commodities data to the frontend
+    commodities = get_commodities_list()
+    print(commodities)
     return render_template('index.html', commodities=commodities)
 
 
@@ -40,9 +69,8 @@ def index():
 def get_historical_prices(symbol):
     """Fetch historical data for the provided ticker symbol."""
 
-    url = BASE_URL + "historical-price-full/" + symbol + "?apikey=" + FMP_API_KEY
-    response = requests.get(url)
-    historical_data = response.json()
+    historical_data = update_historical_prices(symbol)
+    print(historical_data)
 
     return render_template('historical.html', data=historical_data)
 
