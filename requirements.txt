@@ -1,9 +1,13 @@
 Flask
 requests
 python-dotenv
-Flask-Cors
 Flask-SQLAlchemy
-flask-bcrypt
+Flask-Bcrypt
+Flask-JWT-Extended
+redis
+psycopg2-binary
+Flask-Cors
+# flask_cors
 
 # Flask==2.3.2
 # requests==2.31.0
