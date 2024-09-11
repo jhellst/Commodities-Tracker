@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, session, render_tem
 import requests
 from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
-# from flask_cors import CORS
 
 
 import json
@@ -25,16 +24,15 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-
-
 bcrypt = Bcrypt(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
-app.config['SQLALCHEMY_ECHO'] = True
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
-app.config["JWT_SECRET_KEY"] = os.environ['SECRET_KEY']
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
+# app.config['CORS_HEADERS'] = 'Content-Type'
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
+# app.config['SQLALCHEMY_ECHO'] = True
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+# app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+# app.config["JWT_SECRET_KEY"] = os.environ['SECRET_KEY']
+# app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 # FMP_API_KEY = os.getenv('FMP_API_KEY')
