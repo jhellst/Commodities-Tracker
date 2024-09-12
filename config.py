@@ -1,16 +1,14 @@
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 import redis
 
 load_dotenv()
 
 class ApplicationConfig:
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
-    # PORT = os.getenv('POSTGRES_PORT')
-
     # CORS_HEADERS = 'Content-Type'
 
 #enable session config
