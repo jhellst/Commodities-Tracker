@@ -71,6 +71,7 @@ def get_historical_prices(symbol):
     return render_template('historical.html', data=historical_data)
 
 
+# TODO: Fix this route to test database retrieval.
 
 # Route to retrieve a commodities' historical prices via the database.
 # @app.route('/commodities/<string:symbol>')
@@ -78,10 +79,10 @@ def get_historical_prices(symbol):
 def get_historical_prices_from_db(symbol):
     """Fetch historical data for the provided ticker symbol."""
 
-    # historical_data = db.session.query(CommodityHistoricalData).filter(CommodityHistoricalData.ticker_symbol == symbol)
-    historical_data = db.session.query(CommodityHistoricalData)
+    historical_data = db.session.query(CommodityHistoricalData).filter(CommodityHistoricalData.ticker_symbol == symbol)
+    # historical_data = db.session.query(CommodityHistoricalData)
 
-    print("historical_data_2!", historical_data)
+    print("historical_data_2!", historical_data[0])
 
     return render_template('historical_2.html', symbol=symbol, data=historical_data)
 
