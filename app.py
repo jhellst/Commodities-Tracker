@@ -71,5 +71,32 @@ def get_historical_prices(symbol):
     return render_template('historical.html', data=historical_data)
 
 
+
+# Route to retrieve a commodities' historical prices via the database.
+# @app.route('/commodities/<string:symbol>')
+@app.route('/commodities/historical_2/<string:symbol>')
+def get_historical_prices_from_db(symbol):
+    """Fetch historical data for the provided ticker symbol."""
+
+    # historical_data = db.session.query(CommodityHistoricalData).filter(CommodityHistoricalData.ticker_symbol == symbol)
+    historical_data = db.session.query(CommodityHistoricalData)
+
+    print("historical_data_2!", historical_data)
+
+    return render_template('historical_2.html', symbol=symbol, data=historical_data)
+
+
+
+
+
+# Error route.
+@app.errorhandler(404)
+def page_not_found(e):
+    """Show 404 NOT FOUND page."""
+
+    return render_template('404.html'), 404
+
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
