@@ -45,14 +45,14 @@
             {% for entry in data %}
             <tr>
                 <td>{{ entry.date }}</td>
-                <td>{{ entry.open }}</td>
-                <td>{{ entry.high }}</td>
-                <td>{{ entry.low }}</td>
-                <td>{{ entry.close }}</td>
-                <td>{{ entry.adjClose }}</td>
+                <td>{{ entry.open_price }}</td>
+                <td>{{ entry.high_price }}</td>
+                <td>{{ entry.low_price }}</td>
+                <td>{{ entry.close_price }}</td>
+                <td>{{ entry.adj_close_price }}</td>
                 <td>{{ entry.volume }}</td>
-                <td>{{ entry.change }}</td>
-                <td>{{ entry.changePercent }}</td>
+                <td>{{ entry.amount_change }}</td>
+                <td>{{ entry.percentage_change }}</td>
                 <td>{{ entry.vwap }}</td>
             </tr>
             {% endfor %}
