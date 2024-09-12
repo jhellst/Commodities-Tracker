@@ -24,30 +24,28 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
-bcrypt = Bcrypt(app)
+# bcrypt = Bcrypt(app)
 
-# app.config['CORS_HEADERS'] = 'Content-Type'
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
-# app.config['SQLALCHEMY_ECHO'] = True
-# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
-# app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
+app.config['SQLALCHEMY_ECHO'] = True
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 # app.config["JWT_SECRET_KEY"] = os.environ['SECRET_KEY']
 # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-jwt = JWTManager(app)
+# jwt = JWTManager(app)
 
 # FMP_API_KEY = os.getenv('FMP_API_KEY')
 # BASE_URL = os.getenv('FMP_BASE_URL')
 
 
-@jwt.expired_token_loader
-def my_expired_token_callback(expired_token, date):
-    # print("Hello from jwt_expired_decorator")
-    return redirect(url_for('logout_user'))
+# @jwt.expired_token_loader
+# def my_expired_token_callback(expired_token, date):
+#     # print("Hello from jwt_expired_decorator")
+#     return redirect(url_for('logout_user'))
 
 
 connect_db(app)
-
-
 
 
 # Routes below -> just to see content of backend API calls pre-db update.
