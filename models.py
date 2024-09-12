@@ -6,7 +6,6 @@ from flask_bcrypt import Bcrypt
 from config import ApplicationConfig
 
 bcrypt = Bcrypt()
-
 db = SQLAlchemy()
 
 
@@ -41,7 +40,7 @@ class User(db.Model):
     )
 
     commodities_followed_by_user = db.relationship(
-        'Commodity', secondary='commodities_followed_by_users', backref='users', order_by='Commodity.symbol')
+        'Commodity', secondary='commodities_followed_by_users', backref='users', order_by='Commodity.ticker_symbol')
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.password}>"
@@ -115,14 +114,22 @@ class Commodity(db.Model):
         nullable=True
     )
 
+    # def __init__(self, ticker_symbol, name, currency, stock_exchange_symbol, stock_exchange_name):
+    #     self.ticker_symbol = ticker_symbol
+    #     self.name = name
+    #     self.currency = currency
+    #     self.stock_exchange_symbol = stock_exchange_symbol
+    #     self.stock_exchange_name = stock_exchange_name
+
+
     users_following_commodity = db.relationship(
         'User', secondary='commodities_followed_by_users', backref='commodities')
 
-    @classmethod
-    def get_commodity(cls, ticker_symbol):
-        """Gets a commodity and all of its basic info."""
-        commodity = db.session.query(Commodity).filter(Commodity.ticker_symbol == ticker_symbol)
-        return commodity
+    # @classmethod
+    # def get_commodity(cls, ticker_symbol):
+    #     """Gets a commodity and all of its basic info."""
+    #     commodity = db.session.query(Commodity).filter(Commodity.ticker_symbol == ticker_symbol)
+    #     return commodity
 
 
 
@@ -131,11 +138,17 @@ class CommodityHistoricalData(db.Model):
 
     __tablename__ = "commodities_historical_data"
 
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True
+    )
+
     # Commodity ticker symbol.
     ticker_symbol = db.Column(
         db.String,
         db.ForeignKey("commodities.ticker_symbol", ondelete="CASCADE"),
-        primary_key=True,
+        primary_key=False,
     )
 
     # Date of data record for selected commodity.
@@ -215,7 +228,7 @@ class CommoditiesFollowedByUser(db.Model):
     ticker_symbol = db.Column(
         db.String,
         db.ForeignKey("commodities.ticker_symbol", ondelete="CASCADE"),
-        primary_key=True,
+        primary_key=False,
     )
 
     @classmethod
