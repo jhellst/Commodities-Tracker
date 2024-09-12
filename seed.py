@@ -14,23 +14,22 @@ db.create_all()
 
 # Add list of Commodities to database.
 commodities_list = get_commodities_list()
-print("commodities_list: ", commodities_list)
+
+# print("commodities_list: ", commodities_list)
 # {'symbol': 'ESUSD', 'name': 'E-Mini S&P 500', 'currency': 'USD', 'stockExchange': 'CME', 'exchangeShortName': 'COMMODITY'}
 
 for commodity in commodities_list:
-    print("commodity!", commodity, commodity.get('symbol'), commodity.get('name'), commodity.get('currency'), commodity.get('stockExchange'), commodity.get('exchangeShortName'))
 
-    # TODO: Fix this functionality for seeding db.
+    # print("commodity!", commodity, commodity.get('symbol'), commodity.get('name'), commodity.get('currency'), commodity.get('stockExchange'), commodity.get('exchangeShortName'))
 
-    print("1@")
-    print("commodity.get('symbol')", commodity.get('symbol'), type(commodity.get('symbol')))
-    print("commodity.get('name')", commodity.get('name'), type(commodity.get('name')))
-    print("commodity.get('currency')", commodity.get('currency'), type(commodity.get('currency')))
-    print("commodity.get('stockExchange')", commodity.get('stockExchange'), type(commodity.get('stockExchange')))
-    print("commodity.get('exchangeShortName')", commodity.get('exchangeShortName'), type(commodity.get('exchangeShortName')))
+    current_commodity = Commodity(
+        ticker_symbol=commodity.get('symbol'),
+        name=commodity.get('name'),
+        currency=commodity.get('currency'),
+        stock_exchange_symbol=commodity.get('stockExchange'),
+        stock_exchange_name=commodity.get('exchangeShortName')
+        )
 
-
-    current_commodity = Commodity(ticker_symbol=commodity.get('symbol'), name=commodity.get('name'), currency=commodity.get('currency'), stock_exchange_symbol=commodity.get('stockExchange'), stock_exchange_name=commodity.get('exchangeShortName'))
     print("2@")
 
     #   - Then, save the data for each commodity into the db.
@@ -39,16 +38,28 @@ for commodity in commodities_list:
 
     # 2) For each commodity in the initial list, retrieve the historical data and update the db accordingly.
     current_commodity_historical_price_data = update_historical_prices(current_commodity.ticker_symbol)
+    # Note: Returns dict with the following structure:
+    # {'symbol': 'ESUSD', 'historical': [{'date': '2024-09-11', 'open': 5499.25, 'high': 5567.5, 'low': 5412, 'close': 5554.25, 'adjClose': 5554.25, 'volume': 2165175, 'unadjustedVolume': 2165175, 'change': 55, 'changePercent': 1.00014, 'vwap': 5508.25, 'label': 'September 11, 24', 'changeOverTime': 0.0100014}, ...]
 
-    print("current_commodity_historical_price_data", current_commodity_historical_price_data)
+    # print("current_commodity_historical_price_data", current_commodity_historical_price_data)
+    # print("current_commodity_historical_price_data@2", current_commodity_historical_price_data.get('historical'))
 
-    for one_day_price_data in current_commodity_historical_price_data:
+
+    for one_day_price_data in current_commodity_historical_price_data.get('historical'):
+        # print("cur_day_price_data@", one_day_price_data)
+
         cur_day_price_data = CommodityHistoricalData(ticker_symbol=current_commodity.ticker_symbol,
-                                                     date=one_day_price_data.date, open_price=one_day_price_data.open,
-                                                     close_price=one_day_price_data.close, high_price=one_day_price_data.high,
-                                                     low_price=one_day_price_data.low, adj_close_price=one_day_price_data.adjClose,
-                                                     volume=one_day_price_data.volume, amount_change=one_day_price_data.change,
-                                                     percentage_change=one_day_price_data.changePercent, vwap=one_day_price_data.vwap)
+                                                    date=one_day_price_data.get('date'),
+                                                    open_price=one_day_price_data.get('open'),
+                                                    close_price=one_day_price_data.get('close'),
+                                                    high_price=one_day_price_data.get('high'),
+                                                    low_price=one_day_price_data.get('low'),
+                                                    adj_close_price=one_day_price_data.get('adjClose'),
+                                                    volume=one_day_price_data.get('volume'),
+                                                    amount_change=one_day_price_data.get('change'),
+                                                    percentage_change=one_day_price_data.get('changePercent'),
+                                                    vwap=one_day_price_data.get('vwap'),
+                                                     )
         db.session.add(cur_day_price_data)
         db.session.commit()
 
