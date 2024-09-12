@@ -15,7 +15,7 @@ def get_commodities_list():
     response = requests.get(url)
 
     commodities = response.json()  # Assuming it returns a JSON list of commodities
-    print("commodities: ", commodities)
+    # print("commodities: ", commodities)
     return commodities
 
 
