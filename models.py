@@ -39,8 +39,8 @@ class User(db.Model):
         nullable=False,
     )
 
-    commodities_followed_by_user = db.relationship(
-        'Commodity', secondary='commodities_followed_by_users', backref='users', order_by='Commodity.ticker_symbol')
+    # commodities_followed_by_user = db.relationship(
+    #     'Commodity', secondary='commodities_followed_by_users', backref='users', order_by='Commodity.ticker_symbol')
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.password}>"
