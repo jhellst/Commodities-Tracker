@@ -20,6 +20,7 @@ from flask_jwt_extended import JWTManager
 
 
 load_dotenv()
+CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -30,14 +31,13 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URI']
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 # app.config["JWT_SECRET_KEY"] = os.environ['SECRET_KEY']
 # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
 # jwt = JWTManager(app)
-
-# FMP_API_KEY = os.getenv('FMP_API_KEY')
-# BASE_URL = os.getenv('FMP_BASE_URL')
-
 
 # @jwt.expired_token_loader
 # def my_expired_token_callback(expired_token, date):
@@ -68,6 +68,11 @@ def get_historical_prices(symbol):
     historical_data = update_historical_prices(symbol)
     print(historical_data)
 
+    # TODO: REMOVE
+    # historical_data_2 = db.session.query(CommodityHistoricalData).filter(CommodityHistoricalData.ticker_symbol == symbol)
+    # print("historical_data_2@", historical_data_2)
+
+
     return render_template('historical.html', data=historical_data)
 
 
@@ -79,12 +84,39 @@ def get_historical_prices(symbol):
 def get_historical_prices_from_db(symbol):
     """Fetch historical data for the provided ticker symbol."""
 
-    historical_data = db.session.query(CommodityHistoricalData).filter(CommodityHistoricalData.ticker_symbol == symbol)
-    # historical_data = db.session.query(CommodityHistoricalData)
+    print("SYMBOL!", symbol)
+    print("PRE historical_data_2!")
+    historical_data = db.session.query(CommodityHistoricalData).filter(CommodityHistoricalData.ticker_symbol == symbol).all()
+
+    if not historical_data:
+        # Handle the case where no data is found for the symbol
+        print(f"No historical data found for symbol: {symbol}")
+        return render_template('historical_2.html', symbol=symbol, data=None)
 
     print("historical_data_2!", historical_data[0])
 
     return render_template('historical_2.html', symbol=symbol, data=historical_data)
+
+
+
+
+@app.route('/check_db')
+def check_db():
+    """A simple route to check database connectivity and data retrieval."""
+    try:
+        # Query the database for any data (e.g., from the 'CommodityHistoricalData' table)
+        test_data = db.session.query(CommodityHistoricalData).first()
+
+        if test_data:
+            # If data is found, return it as a simple response
+            return f"Database connection successful. First record: {test_data.ticker_symbol}"
+        else:
+            # If no data is found, indicate that the table is empty
+            return "Database connection successful, but no data found."
+
+    except Exception as e:
+        # If an error occurs, return the error message
+        return f"Database connection failed: {e}"
 
 
 
