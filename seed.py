@@ -15,12 +15,7 @@ db.create_all()
 # Add list of Commodities to database.
 commodities_list = get_commodities_list()
 
-# print("commodities_list: ", commodities_list)
-# {'symbol': 'ESUSD', 'name': 'E-Mini S&P 500', 'currency': 'USD', 'stockExchange': 'CME', 'exchangeShortName': 'COMMODITY'}
-
 for commodity in commodities_list:
-
-    # print("commodity!", commodity, commodity.get('symbol'), commodity.get('name'), commodity.get('currency'), commodity.get('stockExchange'), commodity.get('exchangeShortName'))
 
     current_commodity = Commodity(
         ticker_symbol=commodity.get('symbol'),
@@ -29,8 +24,6 @@ for commodity in commodities_list:
         stock_exchange_symbol=commodity.get('stockExchange'),
         stock_exchange_name=commodity.get('exchangeShortName')
         )
-
-    print("2@")
 
     #   - Then, save the data for each commodity into the db.
     db.session.add(current_commodity)
@@ -46,7 +39,7 @@ for commodity in commodities_list:
 
 
     for one_day_price_data in current_commodity_historical_price_data.get('historical'):
-        # print("cur_day_price_data@", one_day_price_data)
+        print("cur_day_price_data@", one_day_price_data)
 
         cur_day_price_data = CommodityHistoricalData(ticker_symbol=current_commodity.ticker_symbol,
                                                     date=one_day_price_data.get('date'),
@@ -59,7 +52,7 @@ for commodity in commodities_list:
                                                     amount_change=one_day_price_data.get('change'),
                                                     percentage_change=one_day_price_data.get('changePercent'),
                                                     vwap=one_day_price_data.get('vwap'),
-                                                     )
+                                                    )
         db.session.add(cur_day_price_data)
         db.session.commit()
 
