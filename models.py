@@ -122,8 +122,8 @@ class Commodity(db.Model):
     #     self.stock_exchange_name = stock_exchange_name
 
 
-    users_following_commodity = db.relationship(
-        'User', secondary='commodities_followed_by_users', backref='commodities')
+    # users_following_commodity = db.relationship(
+    #     'User', secondary='commodities_followed_by_users', backref='commodities')
 
     # @classmethod
     # def get_commodity(cls, ticker_symbol):
@@ -134,7 +134,7 @@ class Commodity(db.Model):
 
 
 class CommodityHistoricalData(db.Model):
-    """Standings and other statistics from a pro soccer league."""
+    """Standings and other statistics from a single commodity."""
 
     __tablename__ = "commodities_historical_data"
 
