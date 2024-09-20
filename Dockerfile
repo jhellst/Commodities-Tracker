@@ -11,7 +11,8 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 5001 available to the world outside this container
-# EXPOSE 5001
+EXPOSE 5001
+EXPOSE 4000
 
 # Define environment variable
 ENV FLASK_APP=app.py
