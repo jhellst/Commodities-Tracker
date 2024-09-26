@@ -1,0 +1,22 @@
+.NavBar {
+  display: flex;
+  justify-content: space-around;
+  height: 40px;
+  position: sticky;
+  top: 0;
+  background-color: rgb(179, 207, 232);
+  align-items: center;
+  border-radius: 2px 2px 10px 10px;
+}
+
+.NavBar a {
+  font-weight: 500;
+  text-decoration: none;
+  color: rgb(32, 94, 148);
+}
+
+.NavBar a.active {
+  color: rgb(16, 52, 83);
+  font-weight: 700;
+
+}

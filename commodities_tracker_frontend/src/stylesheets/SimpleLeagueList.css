@@ -1,0 +1,90 @@
+
+th{
+	background-color: black;
+	color: #ffe221;
+}
+
+.SimpleLeagueList{
+  display: flex;
+  flex-direction: column;
+  border-collapse: collapse;
+  color: #e5e7eb;
+  align-items: center;
+  /* border: 2px solid #000; */
+  border-radius: 10px;
+  margin: 20px;
+  width: 90%;
+  max-width: 1200px;
+  min-width: 400px;
+}
+
+.SimpleLeagueList > table > thead > tr{
+  background-color: #e5e7eb;
+}
+
+.SimpleLeagueList-Column {
+  color: white;
+}
+
+tr{
+  border-radius: 20px;
+}
+
+table {margin: 2%}
+
+.SimpleLeagueListTable {
+  width: 90%;
+  max-width: 1200px;
+  border-collapse: collapse;
+  margin: 3%;
+  border: 2px solid #000;
+  border-radius: 10px;
+}
+
+.SimpleLeagueList th{
+  /* color: rgba(156, 163, 175, var(--tw-text-opacity)); */
+  color: white;
+}
+
+/* Basic Table Styling with Rounded Edges */
+.table-container {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply alternating row colors directly to tr elements */
+tr:nth-child(even) {
+  background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+}
+
+tr:nth-child(odd) {
+  /* background-color: #ffffff; */
+  background-color: rgba(31, 41, 55);
+
+}
+
+tr:hover {
+  background-color: rgb(141, 153, 170);
+}
+
+.LeagueList-Column-CheckCircle {
+  width: 4%;
+}
+
+.pageButtonsLeague {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 1%;
+}
+
+.pageButtonsLeague > button, .pageButtonsLeague > div {
+  font-size: small;
+  font-weight: bold;
+  width: 200px;
+  height: 40px;
+  margin: 1% 1% 0% 1%;
+}

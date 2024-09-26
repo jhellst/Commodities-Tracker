@@ -1,0 +1,22 @@
+.SimpleLeagueListRow {
+  color: #e5e7eb;
+  align-content: center;
+}
+
+.LeagueTable-Column-CheckCircle {
+  padding-right: 2.5%;
+  /* align-content: center;
+  justify-content: center; */
+}
+
+.SimpleLeagueListRow > a {
+  justify-content: center;
+  /* padding-top: 10px; */
+  height: 0;
+
+}
+
+.leagueName {
+  align-items: center;
+  top: 2%;
+}

@@ -1,0 +1,72 @@
+table {margin: 2%}
+
+.LeagueTable{
+  border-collapse: collapse;
+  color: #e5e7eb;
+  border-radius: 100px;
+  border: 3px solid black;
+}
+
+.LeagueTableContainer{
+  margin-top: 0;
+}
+
+.LeagueTable-Headers tr{
+  border-radius: 20px;
+}
+
+.LeagueTable-HeaderRow th {
+  background-color: white;
+}
+
+.LeagueTable-Column{
+  /* color: rgba(156, 163, 175, var(--tw-text-opacity)); */
+  color: #808080;
+  /* background-color: white; */
+}
+
+.LeagueTable th{
+  /* color: rgba(156, 163, 175, var(--tw-text-opacity)); */
+  color: white;
+}
+
+/* Basic Table Styling with Rounded Edges */
+.table-container {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply alternating row colors directly to tr elements */
+tr:nth-child(even) {
+  /* background-color: #f9f9f9; */
+  background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+  background-color: rgba(31, 41, 55);
+
+}
+
+tr:hover {
+  background-color: rgb(141, 153, 170);
+}
+
+.pageButtonsLeagueTable {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 1%;
+  width: 100%;
+}
+
+.pageButtonsLeagueTable > button, .pageButtonsLeagueTable > div {
+  font-size: small;
+  font-weight: bold;
+  width: 200px;
+  height: 40px;
+  margin: 1% 1% 0% 1%;
+}

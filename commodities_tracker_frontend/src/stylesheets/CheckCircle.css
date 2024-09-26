@@ -1,0 +1,17 @@
+
+
+.checkCircleContainer {
+  /* padding: 2%; */
+  /* right: -48.5%; */
+  /* top: 5%; */
+}
+
+.circleIsChecked {
+  color: 'green';
+  cursor: 'pointer';
+}
+
+.circleIsNotChecked {
+  color: 'gray';
+  cursor: 'pointer';
+}

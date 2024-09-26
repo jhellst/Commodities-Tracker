@@ -1,0 +1,26 @@
+
+.Alert {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  border-radius: 10px;
+  background-color: #f8d7da;
+  color: #994148;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+
+.Alert h2 {
+  color: #9e1722;
+  font-weight: 700;
+}
+
+.Alert p {
+  margin: 0px;
+}

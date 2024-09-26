@@ -1,0 +1,42 @@
+.TeamAndCrest{
+  align-items: center;
+  align-content: center;
+
+}
+
+.LeagueTableRow-Link{
+  display: flex;
+  align-items: center;
+  min-width: 20%;
+}
+
+.TeamAndCrest img {
+  width: auto;
+  height: auto;
+  max-width: 50px; /* Adjust the width as needed */
+  min-width: 50px;
+  max-height: 50px; /* Adjust the height as needed */
+  margin-left: 10px; /* Add margin between the image and text */
+  margin-right: 10px; /* Add margin between the image and text */
+}
+
+th, td {
+    padding: 10px;
+}
+
+tr {
+  background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
+}
+
+.LeagueTableRow{
+  /* background-color: rgba(17, 24, 39, var(--tw-bg-opacity)); */
+  color: rgba(17, 24, 39, var(--tw-bg-opacity));
+}
+
+.LeagueTableRow td{
+  /* background-color: rgba(17, 24, 39, var(--tw-bg-opacity)); */
+  background-color: rgba(17, 24, 39, var(--tw-bg-opacity));
+  color: #white;
+  font-weight: bold;
+  /* color: rgba(17, 24, 39, var(--tw-bg-opacity)); */
+}

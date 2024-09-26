@@ -1,0 +1,29 @@
+.LeagueListRow {
+  color: #e5e7eb;
+  align-content: center;
+  /* padding-top: 2% */
+  height: 50px
+}
+
+.LeagueTable-Column-CheckCircle {
+  padding-right: 2.5%;
+  /* align-content: center; */
+  justify-content: center;
+}
+
+.LeagueListRow > a {
+  justify-content: center;
+  /* padding-top: 10px; */
+  height: 0;
+
+}
+
+.leagueName {
+  align-items: center;
+  top: 2%;
+}
+
+.LeagueTable-Column-RemoveButton {
+  padding: 0 3.5% 0 0;
+  justify-content: center;
+}

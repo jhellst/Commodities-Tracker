@@ -1,0 +1,27 @@
+
+
+.Success {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  border-radius: 10px;
+  background-color: #aff2b0;
+  color: #12803e;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+
+.Success h2 {
+  color: #12803e;
+  font-weight: 700;
+}
+
+.Success p {
+  margin: 0px;
+}

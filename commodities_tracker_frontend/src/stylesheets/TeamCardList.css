@@ -1,0 +1,199 @@
+/* TeamCard Container */
+.TeamCardList {
+  border-radius: 10px;
+  justify-content: center;
+  margin: 20px;
+  background-color: #282c34;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  padding-bottom: 2%;
+}
+
+.TeamCardListInfo {
+  width: 4000px;
+  max-width: 80%;
+  align-items: center;
+
+  /* New styling for multiple cards in single row. */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.TeamCardListInfo > h1 {
+  justify-content: center;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background-color: #000;
+  min-height: 80px;
+}
+
+.TeamCardListInfo > div {
+  margin-top: 1%;
+  margin-bottom: 1%;
+  max-width: 500px;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+
+.TeamCardList-row {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  min-height: 150px;
+  max-height: 200px;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.TeamCardList-row img {
+  max-width: 100%;
+  max-height: 80px; /* Adjust the height as needed */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.TeamCardList-row a {
+  text-decoration: none;
+  color: #007BFF;
+}
+
+.TeamCardList-row a:hover {
+  text-decoration: underline;
+}
+
+.TeamName {
+  font-weight: bolder;
+  font-size: 150%;
+}
+
+
+
+/* TeamNameOuter */
+.teamNameOuter {
+  text-align: center;
+  background-color: #333;
+  color: #fff;
+  padding: 8px;
+}
+
+/* TeamName */
+.teamName {
+  margin: 0;
+}
+
+/* TeamInfo Container */
+.team-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* TeamCrest */
+.teamCrest img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* TeamStatistics Container */
+.team-statistics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+/* TeamStatistics Item */
+.team-statistics > div {
+  background-color: #fff;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Hover Effect */
+.TeamCard:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+* {
+  color: #e5e7eb;;
+}
+
+th{
+	background-color: black;
+	color: #ffe221;
+}
+
+.LeagueList{
+  display: flex;
+  flex-direction: column;
+  border-collapse: collapse;
+  color: #e5e7eb;
+  align-items: center;
+}
+
+.LeagueList > table > thead > tr{
+  background-color: #e5e7eb;
+}
+
+tr{
+  border-radius: 20px;
+}
+
+table {margin: 2%}
+
+
+.LeagueList th{
+  color: white;
+}
+
+/* Basic Table Styling with Rounded Edges */
+.table-container {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply alternating row colors directly to tr elements */
+tr:nth-child(even) {
+  background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff; /* Change to your desired background color */
+  background-color: rgba(31, 41, 55);
+
+}
+
+tr:hover {
+  background-color: rgb(141, 153, 170);
+}
+
+
+.pageButtons {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-right: 1%;
+}
+
+.singleButton {
+  display: flex;
+}
+
+.pageButtons > button {
+  font-size: small;
+  font-weight: bold;
+  width: 200px;
+  height: 40px;
+  margin: 1% 1% 2.5% 1%;
+}

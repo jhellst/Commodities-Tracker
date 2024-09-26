@@ -1,0 +1,21 @@
+
+.removeButton {
+  padding: 0.5em;
+  width: 30px;
+  height: 30px;
+  color: black;
+  position: relative;
+  transform: scale(0.6);
+}
+
+button {
+  background-color: rgba(128, 128, 128, 0.468);
+}
+
+.removeButton:hover {
+  /* border: 2px solid white; */
+  background-color: rgba(27, 27, 27, 0.485);
+  color: #ffffff;
+  color: 'gray';
+  cursor: 'pointer';
+}
