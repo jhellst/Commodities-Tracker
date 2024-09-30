@@ -7,7 +7,7 @@ from flask_cors import CORS, cross_origin
 
 import json, jsonify
 from models import db, connect_db, User, Commodity, CommodityHistoricalData, CommoditiesFollowedByUser
-# from dataClasses import
+from dataClasses import CommodityInfo, CommodityHistoricalInfo
 from datetime import datetime, timedelta, timezone
 from helpers import get_commodities_list, update_historical_prices
 
@@ -55,61 +55,14 @@ connect_db(app)
 
 # Routes below -> just to see content of backend API calls pre-db update.
 
-@app.route('/')
-def index():
-    # Fetch commodities data (list of all commodities being tracked in the database)
-    """Fetch a list of all tracked commodities via the FMP API."""
+# @app.route('/')
+# def index():
+#     # Fetch commodities data (list of all commodities being tracked in the database)
+#     """Fetch a list of all tracked commodities via the FMP API."""
 
-    commodities = get_commodities_list()
-    print(commodities)
-    return render_template('index.html', commodities=commodities)
-
-
-
-@app.route('/commodities/historical/<string:symbol>')
-def get_historical_prices(symbol):
-    """Fetch historical data for the provided ticker symbol."""
-
-    historical_data = update_historical_prices(symbol)
-    print(historical_data)
-
-    # TODO: REMOVE
-    historical_data_2 = db.session.query(CommodityHistoricalData).filter(CommodityHistoricalData.ticker_symbol == symbol)
-    print("historical_data_2@", historical_data_2)
-
-
-    return render_template('historical.html', data=historical_data)
-
-
-# TODO: Fix this route to test database retrieval.
-
-# Route to retrieve a commodities' historical prices via the database.
-# @app.route('/commodities/<string:symbol>')
-@app.route('/commodities/historical_2/<string:symbol>')
-def get_historical_prices_from_db(symbol):
-    data = CommodityHistoricalData.query.filter_by(ticker_symbol=symbol).all()
-    print("data@", data)  # Log the data to inspect it in the console
-    return jsonify([d.serialize() for d in data])
-
-
-@app.route('/check_db/commodities')
-def check():
-    """Test route."""
-    symbol = "ZOUSX"
-
-    data = CommodityHistoricalData.query.filter_by(ticker_symbol=symbol).all()
-    print("data@", data)  # Log the data to inspect it in the console
-    return data
-
-
-@app.route('/commodities/test/<string:symbol>')
-def get_commodity_historical_data(symbol):
-    """Test route."""
-
-    historical_data = db.session.query(CommodityHistoricalData).filter_by(ticker_symbol=symbol).all()
-
-    print("data@2", historical_data)  # Log the data to inspect it in the console
-    return historical_data
+#     commodities = get_commodities_list()
+#     print(commodities)
+#     return render_template('index.html', commodities=commodities)
 
 
 @app.route('/check_db')
@@ -133,6 +86,28 @@ def check_db():
         return f"Database connection failed: {e}"
 
 
+
+@app.get("/all_commodities")
+@cross_origin()
+def get_all_commodities():
+    """Returns basic info for each commodity in the database."""
+
+    all_commodities = db.session.query(
+        Commodity.ticker_symbol, Commodity.name, Commodity.currency, Commodity.stock_exchange_symbol, Commodity.stock_exchange_name)
+
+    commodities = [CommodityInfo(commodity.ticker_symbol, commodity.name, commodity.currency, commodity.stock_exchange_symbol, commodity.stock_exchange_name) for commodity in all_commodities]
+    return commodities
+
+
+# Route to retrieve a commodities' historical prices via the database.
+@app.get("/commodities/<string:symbol>")
+@cross_origin()
+def get_historical_prices(symbol):
+    """Returns historical data for a specified commodity in the database."""
+
+    raw_historical_data = db.session.query(CommodityHistoricalData).filter_by(ticker_symbol=symbol).all()
+    historical_data = [CommodityHistoricalInfo(day.ticker_symbol, day.date, day.open_price, day.high_price, day.low_price, day.close_price, day.adj_close_price, day.volume, day.amount_change, day.percentage_change, day.vwap) for day in raw_historical_data]
+    return historical_data
 
 
 
