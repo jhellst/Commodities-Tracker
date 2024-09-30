@@ -34,10 +34,6 @@ for commodity in commodities_list:
     # Note: Returns dict with the following structure:
     # {'symbol': 'ESUSD', 'historical': [{'date': '2024-09-11', 'open': 5499.25, 'high': 5567.5, 'low': 5412, 'close': 5554.25, 'adjClose': 5554.25, 'volume': 2165175, 'unadjustedVolume': 2165175, 'change': 55, 'changePercent': 1.00014, 'vwap': 5508.25, 'label': 'September 11, 24', 'changeOverTime': 0.0100014}, ...]
 
-    # print("current_commodity_historical_price_data", current_commodity_historical_price_data)
-    # print("current_commodity_historical_price_data@2", current_commodity_historical_price_data.get('historical'))
-
-
     for one_day_price_data in current_commodity_historical_price_data.get('historical'):
         print("cur_day_price_data@", one_day_price_data)
 
@@ -60,22 +56,11 @@ db.session.commit()
 print("Seeding Complete!")
 
 
-# [{'date': '2024-09-09', 'open': 350.5, 'high': 362.5, 'low': 349.75, 'close': 359.5, 'adjClose': 359.5, 'volume': 744, 'unadjustedVolume': 744, 'change': 9, 'changePercent': 2.57, 'vwap': 355.56, 'label': 'September 09, 24', 'changeOverTime': 0.0257}, {'date': '2024-09-08', 'open': 350.5, 'high': 359, 'low': 340.75, 'close': 353.75, 'adjClose': 353.75, 'volume': 900, 'unadjustedVolume': 900, 'change': 3.25, 'changePercent': 0.92724679, 'vwap': 351.17, 'label': 'September 08, 24', 'changeOverTime': 0.0092724679}]
-
-    # db.session.add_all([])
-
-
-
-
-
-
-
 
 # Logic to populate database with all historical commodities data
 #   - Will populate the database with every commodity pulled from high-level API request.
 #       - From start of historical data, the pulled data will contain (for each commodity):
 #           - Date, Open Price, High, Low, Close, Adj. Close, Volume, Change ($), Change (%), VWAP (Volume Weighted Average Price)
-
 
 # First, pull all commodities from the high-level route.
 #   - Store all of the information for each commodity.
