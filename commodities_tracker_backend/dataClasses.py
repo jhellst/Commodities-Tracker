@@ -15,7 +15,7 @@ class CommodityInfo:
 
 @dataclass
 class CommodityHistoricalInfo:
-    """Class to hold historical all info for a single commodity."""
+    """Class to hold all historical info for a single commodity."""
     ticker_symbol: str
     date: datetime.datetime
     open: float
@@ -28,3 +28,14 @@ class CommodityHistoricalInfo:
     percent_change: float
     vwap: float
 
+@dataclass
+class CustomIndexInfo:
+    """Class to hold info for a single custom index."""
+    id: int
+    name: str
+
+@dataclass
+class CommoditiesInCustomIndexInfo:
+    """Through table - connects a custom index with all commodities added to that index."""
+    id: int
+    name: str
