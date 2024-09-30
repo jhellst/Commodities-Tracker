@@ -42,7 +42,7 @@ class CommoditiesTrackerApi {
 
 
 
-  /** Get all commodities in database. */
+  /** Get all commodities in the database. */
   static async getCommodities() {
     let commodities = await this.request(`commodities`);
     return commodities;
@@ -54,68 +54,24 @@ class CommoditiesTrackerApi {
     return commodityHistoricalData;
   }
 
-
-
-
-
-
-
-
-  /** Get all leagues in database. */
-  static async getLeagues() {
-    let leagues = await this.request(`leagues`);
-    return leagues;
+  /** Get all custom indices in the database. */
+  static async getCustomIndices() {
+    let customIndices = await this.request(`custom_indices`);
+    return customIndices;
   }
 
-  /** Get all teams in database. */
-  static async getTeams() {
-    const teams = await this.request(`teams`);
-    return teams;
+  /** Get all custom indices in the database. */
+  static async getCustomIndex(id) {
+    let customIndex = await this.request(`custom_indices/<int:id>`);
+    return customIndices;
   }
 
-  /** Get details on a league by its league_id. */
-  static async getLeagueById(league_id) {
-    let league = await this.request(`leagues/${league_id}`);
-    return league;
-  }
 
-  /** Get all teams followed by current user. */
-  static async getFollowedTeams(user_id) {
-    let teams = await this.request(`users/${user_id}/teams`);
-    return teams;
-  }
 
-  /** Get all teams followed by current user. */
-  static async getFollowedLeagues(user_id) {
-    let leagues = await this.request(`users/${user_id}/leagues`);
-    return leagues;
-  }
 
-  /** Get details on a team by its team_id. */
-  static async getTeamById(team_id) {
-    const team = await this.request(`teams/${team_id}`);
-    return team;
-  }
 
-  /** Follows a list of teams and adds to the user's followed_teams page. */
-  static async followTeam(user_id, team_id) {
-    await this.request(`users/${user_id}/teams/${team_id}/follow`, {}, "POST");
-  }
 
-  /** Follows a list of teams and adds to the user's followed_teams page. */
-  static async unfollowTeam(user_id, team_id) {
-    await this.request(`users/${user_id}/teams/${team_id}/unfollow`, {}, "POST");
-  }
 
-  /** Follows a league and adds to the user's followed_leagues page. */
-  static async followLeague(user_id, league_id) {
-    await this.request(`users/${user_id}/leagues/${league_id}/follow`, {}, "POST");
-  }
-
-  /** Follows a list of teams and adds to the user's followed_teams page. */
-  static async unfollowLeague(user_id, league_id) {
-    await this.request(`users/${user_id}/leagues/${league_id}/unfollow`, {}, "POST");
-  }
 
 
   /** Registers user via signup form. */
