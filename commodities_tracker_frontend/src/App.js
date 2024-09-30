@@ -7,60 +7,60 @@ import userContext from "./userContext";
 import { jwtDecode } from "jwt-decode";
 import Loading from './Loading';
 
-// import SoccerLeaguesApi from './api';
 import CommoditiesTrackerApi from './api';
 
 import TeamsAndLeaguesContext from './Contexts';
 
 
-// TODO: Write tests for all routes.
-// TODO: Remove any unused routes and components.
-// Long-Term: Implement search for teams/leagues.
+// Long-Term: Implement search for commodities and custom indices.
 
 /**
- * App: Soccer ProLeagues application.
- * Allows the user to view the league tables for tracked pro soccer leagues, and to view individual teams by clicking on their row in the league table.
+ * App: Commodities Tracker application.
+ * Allows the user to view tracked historical data for all commodities, and to create custom indices of commodities to track combined historical performance.
  *
  * Props: None
  *
  * State:
  *  - User: The current logged in user, if any
  *  - Token: The authorization token that determines if a user is logged in
- *  - Teams: A complete list of pro soccer teams in the database
- *  - Leagues: A complete list of pro soccer leagues in the database
+ *  - Commodities: A complete list of commodities in the database
  *
  */
 function App() {
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
   const [token, setToken] = useState(sessionStorage.getItem('token'));
   const [isLoaded, setIsLoaded] = useState(false);
-  const [leagues, setLeagues] = useState([]);
-  const [teams, setTeams] = useState([]);
-  const [followedLeagues, setFollowedLeagues] = useState([]);
-  const [followedTeams, setFollowedTeams] = useState([]);
-  const [followedTeamIds, setFollowedTeamIds] = useState(new Set());
-  const [followedLeagueIds, setFollowedLeagueIds] = useState(new Set());
+
+  const [commodities, setCommodities] = useState([]);
+  const [customIndices, setcustomIndices] = useState([]);
+
+  // const [followedLeagues, setFollowedLeagues] = useState([]);
+  // const [followedTeams, setFollowedTeams] = useState([]);
+  // const [followedTeamIds, setFollowedTeamIds] = useState(new Set());
+  // const [followedLeagueIds, setFollowedLeagueIds] = useState(new Set());
+
+
 
   useEffect(() => {
-    async function setInitialLeagues() {
-      const leagues = await SoccerLeaguesApi.getLeagues();
-      setLeagues(leagues);
+    async function setInitialCommodities() {
+      const commodities = await CommoditiesTrackerApi.getCommodities();
+      setCommodities(commodities);
     }
-    setInitialLeagues();
+    setInitialCommodities();
   }, []);
 
   useEffect(() => {
-    async function setInitialTeams() {
-      const teams = await SoccerLeaguesApi.getTeams();
-      setTeams(teams);
+    async function setInitialCustomIndices() {
+      const customIndices = await CommoditiesTrackerApi.getCustomIndices();
+      setcustomIndices(customIndices);
     }
-    setInitialTeams();
+    setInitialCustomIndices();
   }, []);
 
   useEffect(() => {
     async function setInitialToken() {
       if (user && user.user_id && user.user_id !== undefined && user.user_id !== "") {
-        const token = await SoccerLeaguesApi.getToken(user.user_id);
+        const token = await CommoditiesTrackerApi.getToken(user.user_id);
         // console.log("****token", token);
         setToken(token.access_token);
       } else {
@@ -88,7 +88,7 @@ function App() {
 
           const user = JSON.parse(decoded.sub);
           const user_id = user.user_id;
-          const userData = await SoccerLeaguesApi.getUserInfo(user_id);
+          const userData = await CommoditiesTrackerApi.getUserInfo(user_id);
           updateUser(userData);
 
         }
@@ -100,6 +100,10 @@ function App() {
     }
     fetchUserData();
   }, [token]);
+
+
+
+
 
   useEffect(() => {
     async function setInitialFollowedLeagues() {
@@ -121,21 +125,9 @@ function App() {
     setInitialFollowedTeams();
   }, [user]);
 
-  useEffect(() => {
-    async function setInitialFollowedLeagueIds() {
-      const followedLeagueIds = new Set(followedLeagues.map(league => league.league_id));
-      setFollowedLeagueIds(followedLeagueIds);
-    }
-    setInitialFollowedLeagueIds();
-  }, [followedLeagues]);
 
-  useEffect(() => {
-    async function setInitialFollowedTeamIds() {
-      const followedTeamIds = new Set(followedTeams.map(team => team.team_id));
-      setFollowedTeamIds(followedTeamIds);
-    }
-    setInitialFollowedTeamIds();
-  }, [followedTeams]);
+
+
 
 
   /** Updates token and sets within local storage (removes if not available) */
@@ -154,14 +146,14 @@ function App() {
 
   /** Logs in user and retrieves token from backend. */
   async function login(formData) {
-    const token = await SoccerLeaguesApi.loginUser(formData);
+    const token = await CommoditiesTrackerApi.loginUser(formData);
     updateToken(token.access_token);
     // updateUser({ username: formData.username, user_id: formData.user_id });
   }
 
   /** Signs up a new user, logs them in, and retrieves token from backend. */
   async function signup(formData) {
-    const token = await SoccerLeaguesApi.registerUser(formData);
+    const token = await CommoditiesTrackerApi.registerUser(formData);
     await login(formData);
   }
 
@@ -169,9 +161,10 @@ function App() {
   function logout() {
     updateUser(null);
     updateToken(null);
-    setFollowedLeagues([]);
-    setFollowedTeams([]);
-    setFollowedTeamIds([]);
+
+    // setFollowedLeagues([]);
+    // setFollowedTeams([]);
+    // setFollowedTeamIds([]);
   }
 
 
