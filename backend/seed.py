@@ -35,7 +35,7 @@ for commodity in commodities_list:
     # {'symbol': 'ESUSD', 'historical': [{'date': '2024-09-11', 'open': 5499.25, 'high': 5567.5, 'low': 5412, 'close': 5554.25, 'adjClose': 5554.25, 'volume': 2165175, 'unadjustedVolume': 2165175, 'change': 55, 'changePercent': 1.00014, 'vwap': 5508.25, 'label': 'September 11, 24', 'changeOverTime': 0.0100014}, ...]
 
     for one_day_price_data in current_commodity_historical_price_data.get('historical'):
-        print("cur_day_price_data@", one_day_price_data)
+        # print("cur_day_price_data@", one_day_price_data)
 
         cur_day_price_data = CommodityHistoricalData(ticker_symbol=current_commodity.ticker_symbol,
                                                     date=one_day_price_data.get('date'),
@@ -51,6 +51,16 @@ for commodity in commodities_list:
                                                     )
         db.session.add(cur_day_price_data)
         db.session.commit()
+
+
+# TODO: Next additions to seeding cadence:
+#   1) Add 1-2 test users.
+#   2) For these users, create 1-2 custom indices.
+#   3) Add commodities to the custom indices.
+
+# Create a custom index and add some commodities to it.
+
+
 
 db.session.commit()
 print("Seeding Complete!")
