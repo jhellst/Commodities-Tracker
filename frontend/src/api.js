@@ -60,10 +60,10 @@ class CommoditiesTrackerApi {
     return customIndices;
   }
 
-  /** Get all custom indices in the database. */
+  /** Get a single custom index from the database. */
   static async getCustomIndex(id) {
-    let customIndex = await this.request(`custom_indices/<int:id>`);
-    return customIndices;
+    let customIndex = await this.request(`custom_indices/${id}`);
+    return customIndex;
   }
 
 
