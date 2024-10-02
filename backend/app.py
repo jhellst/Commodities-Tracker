@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
 
 
-import json, jsonify
+import json
+from flask import jsonify
 from models import db, connect_db, User, Commodity, CommodityHistoricalData, CommoditiesFollowedByUser, CustomIndex, CommoditiesInCustomIndex
 from dataClasses import CommodityInfo, CommodityHistoricalInfo, CustomIndexInfo
 from datetime import datetime, timedelta, timezone
@@ -206,25 +207,25 @@ def get_historical_prices(symbol):
     return historical_data
 
 
-@app.get("/custom_indices")
+@app.get("/custom_index")
 @cross_origin()
 def get_all_custom_indices():
     """Returns all custom indices for the specified user."""
+
+    # TODO: Make this flexible based on user.
     all_custom_indices = db.session.query(CustomIndex.id, CustomIndex.name)
 
     custom_indices = [CustomIndexInfo(index.id, index.name) for index in all_custom_indices]
     return custom_indices
 
 
-@app.get("/custom_indices/<int:id>")
+@app.get("/custom_index/<int:id>")
 @cross_origin()
 def get_custom_index(id):
-    """Returns all custom indices for the specified user."""
+    """Returns a list of commodities included in a specified custom index."""
+    custom_index_commodities = CommoditiesInCustomIndex.query.filter_by(custom_index_id=id).join(Commodity, CommoditiesInCustomIndex.commodity_ticker_symbol == Commodity.ticker_symbol).all()
 
-    custom_index_raw_info = db.session.query(
-        CustomIndex.ticker_symbol, Commodity.name, Commodity.currency, Commodity.stock_exchange_symbol, Commodity.stock_exchange_name)
-
-    commodities = [CommodityInfo(commodity.ticker_symbol, commodity.name, commodity.currency, commodity.stock_exchange_symbol, commodity.stock_exchange_name) for commodity in all_commodities]
+    commodities = [CommodityInfo(commodity.ticker_symbol, commodity.name, commodity.currency, commodity.stock_exchange_symbol, commodity.stock_exchange_name) for commodity in custom_index_commodities]
     return commodities
 
 
