@@ -2,7 +2,7 @@ services:
   flask_app:
     container_name: flask_app
     image: joshhellstrom/flask_live_app:1.0.0
-    build: ./commodities_tracker_backend
+    build: ./backend
     command: flask run --host=0.0.0.0 --port=4000
     ports:
       - "4000:4000"
@@ -12,7 +12,7 @@ services:
     # env_file:
     #   - .env
     volumes:
-      - .:/app/commodities_tracker_backend
+      - .:/app/backend
     depends_on:
       - db
 
@@ -36,10 +36,10 @@ services:
 
   react_frontend:
     container_name: react_frontend
-    build: ./commodities_tracker_frontend
+    build: ./frontend
     volumes:
       # - .:/app/soccer-proleagues-frontend
-      - ./commodities_tracker_frontend:/app
+      - ./frontend:/app
       # - /app/node_modules
     ports:
       - 5001:3000
