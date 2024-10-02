@@ -81,6 +81,9 @@ class User(db.Model):
         return False
 
 
+
+
+
 class Commodity(db.Model):
     """Store information for an individual commodity represented by a symbol."""
 
@@ -213,6 +216,65 @@ class CommodityHistoricalData(db.Model):
     )
 
 
+class CustomIndex(db.Model):
+    """Stores the name and id of a custom index created by a user."""
+
+    __tablename__ = "custom_indices"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True
+    )
+
+    name = db.Column(
+        db.String,
+        unique=True,
+        nullable=False
+    )
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False
+    )
+
+
+
+class CommoditiesInCustomIndex(db.Model):
+    """Through table, joins a custom index with every commodity being tracked in that custom index."""
+
+    __tablename__ = "commodities_in_custom_indices"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True
+    )
+
+    custom_index_id = db.Column(
+        db.Integer,
+        db.ForeignKey("custom_indices.id", ondelete="CASCADE"),
+        nullable=False
+        # primary_key=True,
+    )
+
+    commodity_ticker_symbol = db.Column(
+        db.String,
+        db.ForeignKey("commodities.ticker_symbol", ondelete="CASCADE"),
+        nullable=False
+        # primary_key=False,
+    )
+
+    # user_id = db.Column(
+    #     db.Integer,
+    #     db.ForeignKey("users.id", ondelete="CASCADE"),
+    #     primary_key=True,
+    # )
+
+
+
+
 
 class CommoditiesFollowedByUser(db.Model):
     """Stores the id of each team that is being followed by a user."""
@@ -255,60 +317,6 @@ class CommoditiesFollowedByUser(db.Model):
             user_id: user_id,
             ticker_symbol: ticker_symbol
         }
-
-
-class CustomIndex(db.Model):
-    """Stores the name and id of a custom index created by a user."""
-
-    __tablename__ = "custom_indices"
-
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-        autoincrement=True
-    )
-    name = db.Column(
-        db.String,
-        unique=True,
-        nullable=False
-    )
-
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey("users.id", ondelete="CASCADE"),
-        primary_key=True,
-    )
-
-
-
-class CommoditiesInCustomIndex(db.Model):
-    """Through table, joins a custom index with every commodity being tracked in that custom index."""
-
-    __tablename__ = "commodities_in_custom_indices"
-
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-        autoincrement=True
-    )
-
-    custom_index_id = db.Column(
-        db.Integer,
-        db.ForeignKey("custom_indices.id", ondelete="CASCADE"),
-        primary_key=False,
-    )
-
-    # user_id = db.Column(
-    #     db.Integer,
-    #     db.ForeignKey("users.id", ondelete="CASCADE"),
-    #     primary_key=True,
-    # )
-
-    commodity_ticker_symbol = db.Column(
-        db.String,
-        db.ForeignKey("commodities.ticker_symbol", ondelete="CASCADE"),
-        primary_key=False,
-    )
 
 
 # Next steps for refining database functionality:
