@@ -184,7 +184,7 @@ def check_db():
 
 
 
-@app.get("/all_commodities")
+@app.get("/commodities")
 @cross_origin()
 def get_all_commodities():
     """Returns basic info for each commodity in the database."""
