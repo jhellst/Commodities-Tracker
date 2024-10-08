@@ -1,0 +1,28 @@
+.NavBar {
+  height: 60px;
+  /* background-color: rgb(205, 224, 241); */
+  /* background-color: #66747b; */
+  background-color: #b9c4c9a0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  border-radius: 0 0 15px 15px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.NavBar a {
+  /* color: rgb(8, 37, 8); */
+  color: black;
+  font-weight: bold;
+}
+
+.NavBar a.active {
+  /* color: rgb(186, 186, 230); */
+  color: white;
+  font-weight: 700;
+}
