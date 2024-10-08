@@ -12,7 +12,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # RUN npm ci
-# RUN npm install react-scripts@5.0.1 -g --silent
+RUN npm install react-scripts@5.0.1 -g --silent
 # RUN npm install react-scripts@5.0.0 -g --silent
 RUN npm install
 
