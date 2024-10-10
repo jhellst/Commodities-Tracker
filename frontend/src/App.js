@@ -27,23 +27,35 @@ import CommoditiesTrackerApi from './api';
 function App() {
   // const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
   // const [token, setToken] = useState(sessionStorage.getItem('token'));
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+
   const [commodities, setCommodities] = useState([]);
+  const [commodityHistoricalData, setCommodityHistoricalData] = useState([]);
+
   const [customIndices, setcustomIndices] = useState([]);
 
 
 
   useEffect(() => {
     async function setInitialCommodities() {
-      const commodities = await CommoditiesTrackerApi.getCommodities();
+      const commodities = await getCommodities();
       setCommodities(commodities);
     }
     setInitialCommodities();
   }, []);
 
   useEffect(() => {
+    async function setInitialCommodityHistoricalData() {
+      const commodityHistoricalData = await getCommodityHistoricalData();
+      setCommodityHistoricalData(commodityHistoricalData);
+    }
+    setInitialCommodityHistoricalData();
+  }, []);
+
+  useEffect(() => {
     async function setInitialCustomIndices() {
-      const customIndices = await CommoditiesTrackerApi.getCustomIndices();
+      const customIndices = await getCustomIndices();
       setcustomIndices(customIndices);
     }
     setInitialCustomIndices();
@@ -97,41 +109,41 @@ function App() {
 
 
   /** Updates token and sets within local storage (removes if not available) */
-  function updateToken(token) {
-    console.log("****token", token);
-    setToken(token);
-    (token) ?
-      sessionStorage.setItem("token", token) :
-      sessionStorage.removeItem("token");
-  }
+  // function updateToken(token) {
+  //   console.log("****token", token);
+  //   setToken(token);
+  //   (token) ?
+  //     sessionStorage.setItem("token", token) :
+  //     sessionStorage.removeItem("token");
+  // }
 
   /** Updates token and sets within local storage (removes if not available) */
-  function updateUser(user) {
-    setUser(user);
-  }
+  // function updateUser(user) {
+  //   setUser(user);
+  // }
 
   /** Logs in user and retrieves token from backend. */
-  async function login(formData) {
-    const token = await CommoditiesTrackerApi.loginUser(formData);
-    updateToken(token.access_token);
-    // updateUser({ username: formData.username, user_id: formData.user_id });
-  }
+  // async function login(formData) {
+  //   const token = await CommoditiesTrackerApi.loginUser(formData);
+  //   updateToken(token.access_token);
+  //   // updateUser({ username: formData.username, user_id: formData.user_id });
+  // }
 
   /** Signs up a new user, logs them in, and retrieves token from backend. */
-  async function signup(formData) {
-    const token = await CommoditiesTrackerApi.registerUser(formData);
-    await login(formData);
-  }
+  // async function signup(formData) {
+  //   const token = await CommoditiesTrackerApi.registerUser(formData);
+  //   await login(formData);
+  // }
 
   /** Logs out user and removes token from local storage. */
-  function logout() {
-    updateUser(null);
-    updateToken(null);
+  // function logout() {
+  //   updateUser(null);
+  //   updateToken(null);
 
-    // setFollowedLeagues([]);
-    // setFollowedTeams([]);
-    // setFollowedTeamIds([]);
-  }
+  //   // setFollowedLeagues([]);
+  //   // setFollowedTeams([]);
+  //   // setFollowedTeamIds([]);
+  // }
 
 
 
@@ -148,9 +160,21 @@ function App() {
   }
 
 
+  /** Retrieves all custom indices in the database. */
+  async function getCustomIndices() {
+    const customIndices = await CommoditiesTrackerApi.getCustomIndices();
+    return customIndices;
+  }
+
+  /** Retrieves all custom indices in the database. */
+  async function getCustomIndex(id) {
+    const customIndex = await CommoditiesTrackerApi.getCustomIndex(id);
+    return customIndex;
+  }
 
 
-
+  console.log("commodities@App", commodities);
+  console.log("commodityHistoricalData@App", commodityHistoricalData);
 
 
 
@@ -160,7 +184,8 @@ function App() {
 
         // <userContext.Provider value={{ user, token }}>
             <BrowserRouter>
-              <Nav user={user} logout={logout} />
+              {/* <Nav user={user} logout={logout} /> */}
+              <Nav />
               {/* <RoutesList user={user} login={login} signup={signup} getTeamDetail={getTeamDetail} getLeagueTable={getLeagueTable} leagues={leagues} teams={teams} followedLeagues={followedLeagues} followedTeams={followedTeams} followedLeagueIds={followedLeagueIds} handleSubmitFollowedLeagues={handleSubmitFollowedLeagues} followedTeamIds={followedTeamIds} handleSubmitFollowedTeams={handleSubmitFollowedTeams} followLeague={followLeague} unfollowLeague={unfollowLeague} unfollowTeam={unfollowTeam} followTeam={followTeam} /> */}
               {/* <RoutesList user={user} login={login} signup={signup} getCommodities={getCommodities} getCommodityHistoricalData={getCommodityHistoricalData} commodities={commodities} /> */}
               <RoutesList getCommodities={getCommodities} getCommodityHistoricalData={getCommodityHistoricalData} commodities={commodities} />
