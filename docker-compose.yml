@@ -38,7 +38,6 @@ services:
     container_name: react_frontend
     build: ./frontend
     volumes:
-      # - .:/app/soccer-proleagues-frontend
       - ./frontend:/app
       # - /app/node_modules
     ports:
