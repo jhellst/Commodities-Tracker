@@ -1,5 +1,6 @@
 // const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 // const BASE_URL = "http://localhost:5001";
+
 const BASE_URL = process.env.REACT_APP_BACKEND_SERVICE_URL;
 console.log("BASE_URL@@@", BASE_URL);
 
@@ -45,12 +46,14 @@ class CommoditiesTrackerApi {
   /** Get all commodities in the database. */
   static async getCommodities() {
     let commodities = await this.request(`commodities`);
+    console.log("commodities@api", commodities);
     return commodities;
   }
 
 /** Retrieve historical data for specified ticker symbol from database. */
   static async getCommodityHistoricalData(tickerSymbol) {
     let commodityHistoricalData = await this.request(`commodities/${tickerSymbol}`);
+    console.log("commodityHistoricalData@api", commodityHistoricalData);
     return commodityHistoricalData;
   }
 
