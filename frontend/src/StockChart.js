@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 
 // Register Chart.js modules
 Chart.register(...registerables);
 
-const StockChart = ({ data }) => {
+const StockChart = ({ getCommodityHistoricalData }) => {
+  const [commodityTickerSymbol, setCommodityTickerSymbol] = useState(useParams().ticker_symbol);
   const [selectedMetrics, setSelectedMetrics] = useState(['close']); // Initially display "close" prices
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [historicalData, setHistoricalData] = useState([]);
+
+  // Helper function to format date to yyyy-MM-dd
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   // Metrics available for toggling
   const metrics = ['open', 'high', 'low', 'close', 'adj_close', 'amount_change', 'percent_change', 'volume', 'vwap'];
@@ -22,9 +34,19 @@ const StockChart = ({ data }) => {
     );
   };
 
+  useEffect(() => {
+    async function fetchHistoricalData() {
+      const data = await getCommodityHistoricalData(commodityTickerSymbol);
+      setHistoricalData(data);
+      setStartDate(formatDate(data[data.length - 1].date)); // Format the date properly
+      setEndDate(formatDate(data[0].date)); // Format the date properly
+    }
+    fetchHistoricalData();
+  }, [commodityTickerSymbol, getCommodityHistoricalData]);
+
   // Date range filtering
-  const filteredData = data.filter(stock => {
-    const stockDate = new Date(stock.date);
+  const filteredData = historicalData.filter(day => {
+    const stockDate = new Date(day.date);
     const isAfterStartDate = !startDate || new Date(startDate) <= stockDate;
     const isBeforeEndDate = !endDate || new Date(endDate) >= stockDate;
     return isAfterStartDate && isBeforeEndDate;
@@ -72,6 +94,8 @@ const StockChart = ({ data }) => {
 
   return (
     <div>
+      <h1>Dynamic Stock Chart</h1>
+
       {/* Date Range Filter */}
       <div>
         <label>
@@ -112,57 +136,4 @@ const StockChart = ({ data }) => {
   );
 };
 
-// Sample data (replace this with your API data or props)
-const stockData = [
-  {
-    adj_close: 389,
-    amount_change: 3.75,
-    close: 389.0,
-    date: "Wed, 02 Oct 2024 00:00:00 GMT",
-    high: 392.0,
-    low: 378.0,
-    open: 385.25,
-    percent_change: 0.97339,
-    ticker_symbol: "ZOUSX",
-    volume: 460,
-    vwap: 386.06
-  },
-  {
-    adj_close: 388,
-    amount_change: -6.0,
-    close: 388.0,
-    date: "Tue, 01 Oct 2024 00:00:00 GMT",
-    high: 395.5,
-    low: 385.0,
-    open: 394.0,
-    percent_change: -1.52,
-    ticker_symbol: "ZOUSX",
-    volume: 409,
-    vwap: 390.63
-  },
-  {
-    adj_close: 393,
-    amount_change: 9.5,
-    close: 392.5,
-    date: "Mon, 30 Sep 2024 00:00:00 GMT",
-    high: 393.75,
-    low: 382.25,
-    open: 383.0,
-    percent_change: 2.48,
-    ticker_symbol: "ZOUSX",
-    volume: 579,
-    vwap: 387.88
-  }
-];
-
-// Main App
-const StockChartOuter = () => {
-  return (
-    <div>
-      <h1>Dynamic Stock Chart</h1>
-      <StockChart data={stockData} />
-    </div>
-  );
-};
-
-export default StockChartOuter;
+export default StockChart;
