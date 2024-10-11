@@ -6,7 +6,7 @@ import NotFound from './NotFound';
 import CommoditiesList from './CommoditiesList';
 import CommodityDetail from './CommodityDetail';
 
-import StockChartOuter from './StockChart';
+import StockChart from './StockChart';
 
 /** Provides routing for app. Will provide access to routes with info on
  *    companies/jobs/profile if user is logged in, otherwise will
@@ -25,7 +25,7 @@ function RoutesList({ commodities, getCommodities, getCommodityHistoricalData })
           {/* <Route path="/commodities" element={<CommoditiesList2 title="All Commodities" commodities={commodities}/>} /> */}
           <Route path="/commodities" element={<CommoditiesList title="All Commodities" commodities={commodities}/>} />
           <Route path="/commodities/:ticker_symbol" element={<CommodityDetail title={"Commodity Detail"} commodities={commodities} getCommodityHistoricalData={getCommodityHistoricalData} />} />
-          <Route path="/stock_chart/:ticker_symbol" element={<StockChartOuter title={"Commodity Chart"} getCommodityHistoricalData={getCommodityHistoricalData} />} />
+          <Route path="/stock_chart/:ticker_symbol" element={<StockChart title={"Commodity Chart"} getCommodityHistoricalData={getCommodityHistoricalData} />} />
 
           {/* <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/signup" element={<Navigate to="/" />} /> */}
