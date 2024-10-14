@@ -25,14 +25,14 @@ import CommoditiesTrackerApi from './api';
  *
  */
 function App() {
-  // const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
-  // const [token, setToken] = useState(sessionStorage.getItem('token'));
+  const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')));
+  const [token, setToken] = useState(sessionStorage.getItem('token'));
   // const [isLoaded, setIsLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
 
   const [commodities, setCommodities] = useState([]);
   const [commodityHistoricalData, setCommodityHistoricalData] = useState([]);
-
+  const [followedCommodities, setFollowedCommodities] = useState([]);
   const [customIndices, setcustomIndices] = useState([]);
 
 
@@ -61,89 +61,89 @@ function App() {
     setInitialCustomIndices();
   }, []);
 
-  // useEffect(() => {
-  //   async function setInitialToken() {
-  //     if (user && user.user_id && user.user_id !== undefined && user.user_id !== "") {
-  //       const token = await CommoditiesTrackerApi.getToken(user.user_id);
-  //       // console.log("****token", token);
-  //       setToken(token.access_token);
-  //     } else {
-  //       setToken(null);
-  //     }
-  //   }
-  //   setInitialToken();
-  // }, [user]);
+  useEffect(() => {
+    async function setInitialToken() {
+      if (user && user.user_id && user.user_id !== undefined && user.user_id !== "") {
+        const token = await CommoditiesTrackerApi.getToken(user.user_id);
+        // console.log("****token", token);
+        setToken(token.access_token);
+      } else {
+        setToken(null);
+      }
+    }
+    setInitialToken();
+  }, [user]);
 
-  // /** Checks state for a token, if token exists set token in SoccerLeagues API
-  //  *    and set user state if token exists. */
-  // useEffect(function getUserData() {
-  //   async function fetchUserData() {
-  //     // console.log("token", token);
+  /** Checks state for a token, if token exists set token in CommoditiesTracker API
+   *    and set user state if token exists. */
+  useEffect(function getUserData() {
+    async function fetchUserData() {
+      // console.log("token", token);
 
-  //     if (token && token !== undefined && token !== "" && token !== null) {
-  //       try { // Using try/catch block here to check for bad existing token from local storage
-  //         SoccerLeaguesApi.token = token;
-  //         // const decoded = jwtDecode(JSON.stringify(token));
-  //         const decoded = jwtDecode(token);
+      if (token && token !== undefined && token !== "" && token !== null) {
+        try { // Using try/catch block here to check for bad existing token from local storage
+          CommoditiesTrackerApi.token = token;
+          // const decoded = jwtDecode(JSON.stringify(token));
+          const decoded = jwtDecode(token);
 
-  //         if (decoded.exp * 1000 < Date.now()) {
-  //           logout(); // Removes token/user if
-  //         }
+          if (decoded.exp * 1000 < Date.now()) {
+            logout(); // Removes token/user if expired.
+          }
 
-  //         const user = JSON.parse(decoded.sub);
-  //         const user_id = user.user_id;
-  //         const userData = await CommoditiesTrackerApi.getUserInfo(user_id);
-  //         updateUser(userData);
+          const user = JSON.parse(decoded.sub);
+          const user_id = user.user_id;
+          const userData = await CommoditiesTrackerApi.getUserInfo(user_id);
+          updateUser(userData);
 
-  //       }
-  //       catch (err) {
-  //         // console.error(err); // Possibly uncomment this later for error-checking.
-  //       }
-  //     }
-  //     setIsLoaded(true);
-  //   }
-  //   fetchUserData();
-  // }, [token]);
-
-
+        }
+        catch (err) {
+          // console.error(err); // Possibly uncomment this later for error-checking.
+        }
+      }
+      setIsLoaded(true);
+    }
+    fetchUserData();
+  }, [token]);
 
 
-  /** Updates token and sets within local storage (removes if not available) */
-  // function updateToken(token) {
-  //   console.log("****token", token);
-  //   setToken(token);
-  //   (token) ?
-  //     sessionStorage.setItem("token", token) :
-  //     sessionStorage.removeItem("token");
-  // }
+
 
   /** Updates token and sets within local storage (removes if not available) */
-  // function updateUser(user) {
-  //   setUser(user);
-  // }
+  function updateToken(token) {
+    console.log("****token", token);
+    setToken(token);
+    (token) ?
+      sessionStorage.setItem("token", token) :
+      sessionStorage.removeItem("token");
+  }
+
+  /** Updates token and sets within local storage (removes if not available) */
+  function updateUser(user) {
+    setUser(user);
+  }
 
   /** Logs in user and retrieves token from backend. */
-  // async function login(formData) {
-  //   const token = await CommoditiesTrackerApi.loginUser(formData);
-  //   updateToken(token.access_token);
-  //   // updateUser({ username: formData.username, user_id: formData.user_id });
-  // }
+  async function login(formData) {
+    const token = await CommoditiesTrackerApi.loginUser(formData);
+    updateToken(token.access_token);
+    updateUser({ username: formData.username, user_id: formData.user_id });
+  }
 
   /** Signs up a new user, logs them in, and retrieves token from backend. */
-  // async function signup(formData) {
-  //   const token = await CommoditiesTrackerApi.registerUser(formData);
-  //   await login(formData);
-  // }
+  async function signup(formData) {
+    const token = await CommoditiesTrackerApi.registerUser(formData);
+    await login(formData);
+  }
 
   /** Logs out user and removes token from local storage. */
-  // function logout() {
-  //   updateUser(null);
-  //   updateToken(null);
+  function logout() {
+    updateUser(null);
+    updateToken(null);
 
-  //   // setFollowedLeagues([]);
-  //   // setFollowedTeams([]);
-  //   // setFollowedTeamIds([]);
-  // }
+    setFollowedLeagues([]);
+    setFollowedTeams([]);
+    setFollowedTeamIds([]);
+  }
 
 
 
@@ -183,13 +183,13 @@ function App() {
       {isLoaded ?
 
         // <userContext.Provider value={{ user, token }}>
-            <BrowserRouter>
-              {/* <Nav user={user} logout={logout} /> */}
-              <Nav />
-              {/* <RoutesList user={user} login={login} signup={signup} getTeamDetail={getTeamDetail} getLeagueTable={getLeagueTable} leagues={leagues} teams={teams} followedLeagues={followedLeagues} followedTeams={followedTeams} followedLeagueIds={followedLeagueIds} handleSubmitFollowedLeagues={handleSubmitFollowedLeagues} followedTeamIds={followedTeamIds} handleSubmitFollowedTeams={handleSubmitFollowedTeams} followLeague={followLeague} unfollowLeague={unfollowLeague} unfollowTeam={unfollowTeam} followTeam={followTeam} /> */}
-              {/* <RoutesList user={user} login={login} signup={signup} getCommodities={getCommodities} getCommodityHistoricalData={getCommodityHistoricalData} commodities={commodities} /> */}
-              <RoutesList getCommodities={getCommodities} getCommodityHistoricalData={getCommodityHistoricalData} commodities={commodities} />
-            </BrowserRouter>
+        <BrowserRouter>
+          {/* <Nav user={user} logout={logout} /> */}
+          <Nav />
+          {/* <RoutesList user={user} login={login} signup={signup} getTeamDetail={getTeamDetail} getLeagueTable={getLeagueTable} leagues={leagues} teams={teams} followedLeagues={followedLeagues} followedTeams={followedTeams} followedLeagueIds={followedLeagueIds} handleSubmitFollowedLeagues={handleSubmitFollowedLeagues} followedTeamIds={followedTeamIds} handleSubmitFollowedTeams={handleSubmitFollowedTeams} followLeague={followLeague} unfollowLeague={unfollowLeague} unfollowTeam={unfollowTeam} followTeam={followTeam} /> */}
+          {/* <RoutesList user={user} login={login} signup={signup} getCommodities={getCommodities} getCommodityHistoricalData={getCommodityHistoricalData} commodities={commodities} /> */}
+          <RoutesList getCommodities={getCommodities} getCommodityHistoricalData={getCommodityHistoricalData} commodities={commodities} />
+        </BrowserRouter>
         // </userContext.Provider>
         :
         <Loading />
