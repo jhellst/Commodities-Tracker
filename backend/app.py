@@ -4,7 +4,6 @@ import requests
 from dotenv import load_dotenv
 from flask_cors import CORS, cross_origin
 
-
 import json
 from flask import jsonify
 from models import db, connect_db, User, Commodity, CommodityHistoricalData, CommoditiesFollowedByUser, CustomIndex, CommoditiesInCustomIndex
@@ -57,110 +56,110 @@ connect_db(app)
 ##############################################################################
 # User signup/login/logout
 
-# @app.route("/register", methods=["POST"])
-# def register_user():
-#     username = request.json["username"]
-#     password = request.json["password"]
+@app.route("/register", methods=["POST"])
+def register_user():
+    username = request.json["username"]
+    password = request.json["password"]
 
-#     user_exists = User.query.filter_by(username=username).first() is not None
+    user_exists = User.query.filter_by(username=username).first() is not None
 
-#     if user_exists:
-#         return jsonify({"error": "User already exists"}), 409
-#     hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+    if user_exists:
+        return jsonify({"error": "User already exists"}), 409
+    hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
 
-#     new_user = User(username=username, password=hashed_password)
-#     db.session.add(new_user)
-#     db.session.commit()
+    new_user = User(username=username, password=hashed_password)
+    db.session.add(new_user)
+    db.session.commit()
 
-#     user_info = {"username": username, "user_id": new_user.id}
-#     access_token = create_access_token(identity=json.dumps(user_info))
-#     # print("access_token@@@register", access_token)
-#     return jsonify(access_token=access_token)
-
-
-# @app.route("/login", methods=["POST"])
-# def login_user():
-#     username = request.json.get("username", None)
-#     password = request.json.get("password", None)
-
-#     user = User.query.filter_by(username=username).one_or_none()
-
-#     # Checks if user exists.
-#     if user is None:
-#         return jsonify({"error": "Unauthorized"}), 401
-
-#     # Checks if the password is the same as hashed password
-#     if not bcrypt.check_password_hash(user.password, password):
-#         return jsonify({"error": "Unauthorized"}), 401
-
-#     # access_token = create_refresh_token(identity=username)
-#     user_info = {"username": username, "user_id": user.id}
-#     access_token = create_access_token(identity=json.dumps(user_info))
-#     # print("access_token@@@login", access_token)
-#     return jsonify(access_token=access_token)
+    user_info = {"username": username, "user_id": new_user.id}
+    access_token = create_access_token(identity=json.dumps(user_info))
+    # print("access_token@@@register", access_token)
+    return jsonify(access_token=access_token)
 
 
-# @app.route("/token/<username>", methods=["GET"])
-# @jwt_required()
-# def get_token(username):
-#     user_info = User.query.filter_by(username=username).one_or_none()
-#     access_token = create_access_token(identity=json.dumps(user_info))
-#     # print("current_user@token", current_user)
-#     return jsonify(access_token=access_token)
+@app.route("/login", methods=["POST"])
+def login_user():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+
+    user = User.query.filter_by(username=username).one_or_none()
+
+    # Checks if user exists.
+    if user is None:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    # Checks if the password is the same as hashed password
+    if not bcrypt.check_password_hash(user.password, password):
+        return jsonify({"error": "Unauthorized"}), 401
+
+    # access_token = create_refresh_token(identity=username)
+    user_info = {"username": username, "user_id": user.id}
+    access_token = create_access_token(identity=json.dumps(user_info))
+    # print("access_token@@@login", access_token)
+    return jsonify(access_token=access_token)
 
 
-# # TODO: Figure out this route with jwt library.
-# @app.route("/logout", methods=["POST"])
-# def logout_user():
-#     # print("session@@logout", session)
-#     session.pop("user_id")
-#     return "200"
+@app.route("/token/<username>", methods=["GET"])
+@jwt_required()
+def get_token(username):
+    user_info = User.query.filter_by(username=username).one_or_none()
+    access_token = create_access_token(identity=json.dumps(user_info))
+    # print("current_user@token", current_user)
+    return jsonify(access_token=access_token)
 
 
-# @app.route("/users", methods=["GET"])
-# def get_all_users():
-#     user_id = session["user_id"]
-
-#     if not user_id:
-#         return jsonify({"error": "Unauthorized"}), 401
-
-#     all_users = User.query.all()
-#     users = [{"user_id": user.id, "username": user.username}
-#              for user in all_users]
-
-#     return jsonify(users)
+# TODO: Figure out this route with jwt library.
+@app.route("/logout", methods=["POST"])
+def logout_user():
+    # print("session@@logout", session)
+    session.pop("user_id")
+    return "200"
 
 
-# @app.route("/users/<int:user_id>", methods=["GET"])
-# def get_user(user_id):
+@app.route("/users", methods=["GET"])
+def get_all_users():
+    user_id = session["user_id"]
 
-#     if not user_id:
-#         return jsonify({"error": "Unauthorized"}), 401
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
 
-#     user = User.query.filter_by(id=user_id).one_or_none()
-#     print("user!", user)
+    all_users = User.query.all()
+    users = [{"user_id": user.id, "username": user.username}
+             for user in all_users]
 
-#     if not user:
-#         return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(users)
 
-#     return jsonify({
-#         "username": user.username,
-#         "user_id": user.id
-#     })
+
+@app.route("/users/<int:user_id>", methods=["GET"])
+def get_user(user_id):
+
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    user = User.query.filter_by(id=user_id).one_or_none()
+    print("user!", user)
+
+    if not user:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    return jsonify({
+        "username": user.username,
+        "user_id": user.id
+    })
 
 
 
 # Routes below -> just to see content of backend API calls pre-db update.
 
 
-# @app.route('/')
-# def index():
-#     # Fetch commodities data (list of all commodities being tracked in the database)
-#     """Fetch a list of all tracked commodities via the FMP API."""
+@app.route('/')
+def index():
+    # Fetch commodities data (list of all commodities being tracked in the database)
+    """Fetch a list of all tracked commodities via the FMP API."""
 
-#     commodities = get_commodities_list()
-#     print(commodities)
-#     return render_template('index.html', commodities=commodities)
+    commodities = get_commodities_list()
+    print(commodities)
+    return render_template('index.html', commodities=commodities)
 
 
 @app.route('/check_db')
