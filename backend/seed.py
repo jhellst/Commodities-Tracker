@@ -1,14 +1,21 @@
 from app import db
 from models import User, Commodity, CommodityHistoricalData, CommoditiesFollowedByUser
-# from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
 from helpers import get_commodities_list, update_historical_prices
 
-
-# bcrypt = Bcrypt()
+bcrypt = Bcrypt()
 
 db.drop_all()
 db.create_all()
 
+# Add Sample User(s)
+hashed_pwd_1 = bcrypt.generate_password_hash("a").decode('UTF-8')
+hashed_pwd_2 = bcrypt.generate_password_hash("b").decode('UTF-8')
+test_pwd = bcrypt.generate_password_hash("test").decode('UTF-8')
+user_1 = User(username="a", password=hashed_pwd_1)
+user_2 = User(username="b", password=hashed_pwd_2)
+test_user = User(username="TestUser", password=test_pwd)
+db.session.add_all([user_1, user_2, test_user])
 
 # 1) Get commodities list and insert data into db.
 
@@ -59,6 +66,23 @@ for commodity in commodities_list:
 #   3) Add commodities to the custom indices.
 
 # Create a custom index and add some commodities to it.
+
+
+# Add Users' follows for commodities.
+commodity_follow_1 = CommoditiesFollowedByUser(user_id=1, ticker_symbol="ZQUSD")
+commodity_follow_2 = CommoditiesFollowedByUser(user_id=1, ticker_symbol="ZBUSD")
+commodity_follow_3 = CommoditiesFollowedByUser(user_id=1, ticker_symbol="ZFUSD")
+commodity_follow_4 = CommoditiesFollowedByUser(user_id=1, ticker_symbol="GCUSD")
+commodity_follow_5 = CommoditiesFollowedByUser(user_id=1, ticker_symbol="SIUSD")
+commodity_follow_6 = CommoditiesFollowedByUser(user_id=1, ticker_symbol="BZUSD")
+
+db.session.add_all([commodity_follow_1, commodity_follow_2, commodity_follow_3, commodity_follow_4, commodity_follow_5, commodity_follow_6])
+
+
+
+# Create sample custom indices.
+# Add Users' follows for custom indices.
+
 
 
 
