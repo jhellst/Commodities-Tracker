@@ -13,7 +13,6 @@ import StockChart from './StockChart';
  *    show only login and signup buttons, and will not allow other routing.
  */
 // function RoutesList({ user, login, signup, getTeamDetail, leagues, teams, followedLeagues, followedTeams, getLeagueTable, followedLeagueIds, handleSubmitFollowedLeagues, followedTeamIds, handleSubmitFollowedTeams, addTeamToFollowList, followLeague, unfollowLeague, followTeam, unfollowTeam }) {
-// function RoutesList({ commodities, getCommodities, getCommodityHistoricalData }) {
 function RoutesList({ user, login, signup, commodities, getCommodities, getFollowedCommodities, getCommodityHistoricalData, followedCommodities, customIndices, getCustomIndex, getCustomIndices, followCommodity }) {
 
   return (
