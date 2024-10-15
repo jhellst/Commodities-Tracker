@@ -15,7 +15,7 @@ class CommoditiesTrackerApi {
   static token = "";
 
   static async request(endpoint, data = {}, method = "GET") {
-    // console.log("API REQUEST", endpoint, "data", data, "method", method);
+    console.log("API REQUEST", endpoint, "data", data, "method", method);
     const url = new URL(`${BASE_URL}/${endpoint}`);
     console.log("Request@", endpoint, CommoditiesTrackerApi.token);
     const headers = {
@@ -68,6 +68,12 @@ class CommoditiesTrackerApi {
     let customIndex = await this.request(`custom_indices/${id}`);
     return customIndex;
   }
+
+    /** Get all commodities followed by current user. */
+    static async getFollowedCommodities(user_id) {
+      let followedCommodities = await this.request(`users/${user_id}/commodities`);
+      return followedCommodities;
+    }
 
 
 
