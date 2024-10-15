@@ -8,6 +8,7 @@ import CommoditiesListRow from "./CommoditiesListRow";
 
 // function SimpleLeagueList({ user, leagues, title }) {
 function CommoditiesList({ commodities, title }) {
+  console.log(title, "commodities", commodities);
 
   // const [isLoaded, setIsLoaded] = useState(false);
 
