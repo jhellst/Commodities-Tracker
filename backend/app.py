@@ -229,6 +229,21 @@ def get_custom_index(id):
     return commodities
 
 
+@app.get("/users/<int:user_id>/commodities")
+@jwt_required()
+@cross_origin()
+def get_followed_commodities(user_id):
+    """Returns a list of commodities that a user is tracking."""
+
+    if not user_id:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    # user = User.query.filter_by(id=user_id).one_or_none()
+    followed_commodities = CommoditiesInCustomIndex.query.filter_by(id=user_id).join(Commodity, CommoditiesInCustomIndex.commodity_ticker_symbol == Commodity.ticker_symbol).all()
+    commodities = [CommodityInfo(commodity.ticker_symbol, commodity.name, commodity.currency, commodity.stock_exchange_symbol, commodity.stock_exchange_name) for commodity in followed_commodities]
+
+    return commodities
+
 
 
 
