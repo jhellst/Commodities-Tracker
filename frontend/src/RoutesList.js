@@ -12,7 +12,6 @@ import StockChart from './StockChart';
  *    companies/jobs/profile if user is logged in, otherwise will
  *    show only login and signup buttons, and will not allow other routing.
  */
-// function RoutesList({ user, login, signup, getTeamDetail, leagues, teams, followedLeagues, followedTeams, getLeagueTable, followedLeagueIds, handleSubmitFollowedLeagues, followedTeamIds, handleSubmitFollowedTeams, addTeamToFollowList, followLeague, unfollowLeague, followTeam, unfollowTeam }) {
 function RoutesList({ user, login, signup, commodities, getCommodities, getFollowedCommodities, getCommodityHistoricalData, followedCommodities, customIndices, getCustomIndex, getCustomIndices, followCommodity }) {
 
   return (
@@ -20,8 +19,6 @@ function RoutesList({ user, login, signup, commodities, getCommodities, getFollo
       {user ?
         <Routes>
           <Route path="/" element={<Homepage />} />
-          {/* <Route path="/commodities" element={<CommoditiesList title={"All Commodities"} getCommodities={getCommodities} commodities={commodities}/>} /> */}
-          {/* <Route path="/commodities" element={<CommoditiesList2 title="All Commodities" commodities={commodities}/>} /> */}
           <Route path="/commodities" element={<CommoditiesList title="All Commodities"  user={user} commodities={commodities}/>} />
           <Route path="/users/:user_id/commodities" element={<CommoditiesList user={user} commodities={followedCommodities} isUserList="True" title={user.username + "'s Tracked Commodities"} />} />
           {/* <Route path="/users/:user_id/custom_index" element={<CommoditiesList user={user} isUserList="True" title={user.username + "'s Custom Indices"} />} /> */}
